@@ -1,0 +1,42 @@
+<view class="container">
+    <view class="header">
+        <view class="title">学期总课表</view>
+    </view>
+    <view wx:if="{{isLoading}}" class="loading-tip">正在加载...</view>
+    <view class="timetable-wrapper" wx:else>
+        <scroll-view scroll-x="true" scroll-y="true" class="timetable-scroll">
+            <view class="grid-container">
+                <view class="grid-item time-header"></view>
+                <view class="grid-item day-header" wx:for="{{['一', '二', '三', '四', '五', '六', '日']}}" wx:key="index">周{{item}}</view>
+                <block wx:for="{{[1,2,3,4,5,6,7,8,9,10,11,12]}}" wx:for-item="period" wx:key="period">
+                    <view class="grid-item time-header">{{period}}</view>
+                    <view class="grid-item day-cell" wx:for="{{[1,2,3,4,5,6,7]}}" wx:for-item="day" wx:key="day" bindtap="showCourseDetail" data-course="{{null}}">
+                        <block wx:for="{{allTimetable}}" wx:for-item="course" wx:key="courseIndex">
+                            <block wx:if="{{course.DayOfWeek == day && course.StartPeriod == period}}">
+                                <view class="course-block" style="height: {{ (course.EndPeriod - course.StartPeriod + 1) * 80 - 4 }}rpx;" bindtap="showCourseDetail" data-course="{{course}}">
+                                    <text>{{course.CourseName}}</text>
+                                    <text style="font-size: 18rpx; opacity: 0.8;">({{course.StartWeek}}-{{course.EndWeek}}周)</text>
+                                </view>
+                            </block>
+                        </block>
+                    </view>
+                </block>
+            </view>
+        </scroll-view>
+    </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showDetailModal}}" bindtap="hideModal"></view>
+<view class="modal-dialog" wx:if="{{showDetailModal}}">
+    <view class="modal-title">课程详情</view>
+    <view class="modal-content">
+        <view><text class="label">课程名称：</text>{{selectedCourse.CourseName}}</view>
+        <view><text class="label">授课教师：</text>{{selectedCourse.TeacherName}}</view>
+        <view><text class="label">上课时间：</text>周{{dayChars[selectedCourse.DayOfWeek]}} 第{{selectedCourse.StartPeriod}}-{{selectedCourse.EndPeriod}}节</view>
+        <view><text class="label">上课地点：</text>{{selectedCourse.Classroom}}</view>
+        <view><text class="label">起止周数：</text>{{selectedCourse.StartWeek}}-{{selectedCourse.EndWeek}}周</view>
+    </view>
+    <view class="modal-footer">
+        <button class="modal-btn" bindtap="hideModal">关闭</button>
+    </view>
+</view>

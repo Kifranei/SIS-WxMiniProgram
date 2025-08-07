@@ -1,0 +1,54 @@
+<view class="container">
+    <view class="header">
+        <view class="user-info">欢迎您, {{userInfo.RealName}}</view>
+        <view class="week-navigation">
+            <view class="nav-btn" bindtap="prevWeek">‹ 上一周</view>
+            <view class="current-week">{{weekArray[currentWeek - 1]}}</view>
+            <view class="nav-btn" bindtap="nextWeek">下一周 ›</view>
+        </view>
+        <button class="master-btn" size="mini" bindtap="navigateToMaster">总课表</button>
+    </view>
+
+    <view wx:if="{{isLoading}}" class="loading-tip">正在加载...</view>
+    <swiper class="timetable-swiper" current="{{currentWeek - 1}}" bindchange="onWeekChange" wx:else>
+        <block wx:for="{{weekArray}}" wx:for-item="week" wx:for-index="weekIndex" wx:key="weekIndex">
+            <swiper-item>
+              <scroll-view scroll-y="true" class="timetable-scroll">
+    <view class="grid-container">
+        <view class="grid-item time-header"></view>
+        <view class="grid-item day-header" wx:for="{{['一', '二', '三', '四', '五', '六', '日']}}" wx:key="index">周{{item}}</view>
+        
+        <block wx:for="{{[1,2,3,4,5,6,7,8,9,10,11,12]}}" wx:for-item="period" wx:key="period">
+            <view class="grid-item time-header">第{{period}}节</view>
+            <view class="grid-item day-cell" wx:for="{{[1,2,3,4,5,6,7]}}" wx:for-item="day" wx:key="day" bindtap="showCourseDetail" data-course="{{null}}">
+                <block wx:for="{{allTimetable}}" wx:for-item="course" wx:key="courseIndex">
+                    <block wx:if="{{course.DayOfWeek == day && course.StartPeriod == period && currentWeek >= course.StartWeek && currentWeek <= course.EndWeek}}">
+                        <view class="course-block" style="height: {{ (course.EndPeriod - course.StartPeriod + 1) * 80 - 4 }}rpx;" bindtap="showCourseDetail" data-course="{{course}}">
+                            <text>{{course.CourseName}}</text>
+                            <text>@{{course.Classroom}}</text>
+                        </view>
+                    </block>
+                </block>
+            </view>
+        </block>
+    </view>
+</scroll-view>
+            </swiper-item>
+        </block>
+    </swiper>
+</view>
+
+<view class="modal-mask" wx:if="{{showDetailModal}}" bindtap="hideModal"></view>
+<view class="modal-dialog" wx:if="{{showDetailModal}}">
+    <view class="modal-title">课程详情</view>
+    <view class="modal-content">
+        <view><text class="label">课程名称：</text>{{selectedCourse.CourseName}}</view>
+        <view><text class="label">授课教师：</text>{{selectedCourse.TeacherName}}</view>
+        <view><text class="label">上课时间：</text>周{{dayChars[selectedCourse.DayOfWeek]}} 第{{selectedCourse.StartPeriod}}-{{selectedCourse.EndPeriod}}节</view>
+        <view><text class="label">上课地点：</text>{{selectedCourse.Classroom}}</view>
+        <view><text class="label">起止周数：</text>{{selectedCourse.StartWeek}}-{{selectedCourse.EndWeek}}周</view>
+    </view>
+    <view class="modal-footer">
+        <button class="modal-btn" bindtap="hideModal">关闭</button>
+    </view>
+</view>
