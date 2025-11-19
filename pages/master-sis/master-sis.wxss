@@ -1,0 +1,20 @@
+/* pages/master-timetable/master-timetable.wxss */
+.container { display: flex; flex-direction: column; height: 100vh; }
+.header { padding: 20rpx; text-align: center; border-bottom: 1rpx solid #eee; flex-shrink: 0; }
+.title { font-size: 36rpx; font-weight: bold; }
+.loading-tip { text-align: center; color: #999; margin-top: 100rpx; }
+.timetable-wrapper { flex: 1; overflow: hidden; }
+.timetable-scroll { width: 100%; height: 100%; white-space: nowrap; }
+.grid-container { display: inline-grid; grid-template-columns: 80rpx repeat(7, 100rpx); grid-auto-rows: 80rpx; }
+.grid-item { box-sizing: border-box; border-bottom: 1rpx solid #eee; border-right: 1rpx solid #eee; text-align: center; font-size: 22rpx; color: #666; display: flex; align-items: center; justify-content: center; white-space: normal; }
+.day-header, .time-header { background-color: #f8f9fa; font-weight: bold; color: #333; }
+.day-cell { position: relative; }
+.course-block { position: absolute; top: 2rpx; left: 2rpx; right: 2rpx; background-color: #007bff; color: white; border-radius: 6rpx; padding: 5rpx; box-sizing: border-box; font-size: 20rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; overflow: hidden; }
+/* 弹窗样式 */
+.modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; }
+.modal-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; background-color: white; border-radius: 10rpx; z-index: 1001; }
+.modal-title { padding: 30rpx; text-align: center; font-size: 32rpx; font-weight: bold; border-bottom: 1rpx solid #eee; }
+.modal-content { padding: 30rpx; font-size: 28rpx; line-height: 1.8; }
+.modal-content .label { font-weight: bold; color: #333; }
+.modal-footer { padding: 20rpx; border-top: 1rpx solid #eee; text-align: center; }
+.modal-btn { width: 100%; background-color: #007bff; color: white; }

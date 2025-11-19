@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="login-form">
+    <view class="title">教务管理系统登录</view>
+    <input class="input-item" placeholder="请输入用户名" bindinput="onUsernameInput" />
+    <input class="input-item" placeholder="请输入密码" password="true" bindinput="onPasswordInput" />
+    <button class="login-btn" bindtap="onLoginTap">登 录</button>
+
+    <view wx:if="{{errorMessage}}" class="error-message">{{errorMessage}}</view>
+  </view>
+</view>

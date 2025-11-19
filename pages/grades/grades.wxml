@@ -1,0 +1,23 @@
+<view class="container" style="padding: 20rpx;">
+  <view class="title" style="font-size: 36rpx; font-weight: bold; margin-bottom: 30rpx; text-align: center;">我的成绩单</view>
+  
+  <view wx:if="{{loading}}" style="text-align: center;">加载中...</view>
+  
+  <view class="grade-list">
+    <block wx:for="{{gradeList}}" wx:key="index">
+      <view class="grade-item" style="background: #fff; padding: 20rpx; margin-bottom: 20rpx; border-radius: 10rpx; box-shadow: 0 2rpx 5rpx rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+        <view>
+            <view style="font-size: 32rpx; font-weight: bold;">{{item.CourseName}}</view>
+            <view style="font-size: 24rpx; color: #888;">学分: {{item.Credits}}</view>
+        </view>
+        <view style="font-size: 40rpx; font-weight: bold; color: {{item.Grade >= 60 ? '#4caf50' : '#f44336'}};">
+            {{item.Grade}}
+        </view>
+      </view>
+    </block>
+  </view>
+  
+  <view wx:if="{{!loading && gradeList.length === 0}}" style="text-align: center; color: #999; margin-top: 50rpx;">
+    暂无成绩记录
+  </view>
+</view>

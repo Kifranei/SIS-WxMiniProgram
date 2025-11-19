@@ -1,0 +1,16 @@
+<view class="container" style="padding: 20rpx;">
+  <view class="title" style="font-size: 36rpx; font-weight: bold; margin-bottom: 30rpx; text-align: center;">我教授的课程</view>
+  
+  <view class="course-list">
+    <block wx:for="{{courseList}}" wx:key="index">
+      <view class="course-item" style="background: #fff; padding: 30rpx; margin-bottom: 20rpx; border-radius: 10rpx; border-left: 8rpx solid #9c27b0; box-shadow: 0 2rpx 5rpx rgba(0,0,0,0.1);">
+        <view style="font-size: 34rpx; font-weight: bold; margin-bottom: 10rpx;">{{item.CourseName}}</view>
+        <view style="font-size: 26rpx; color: #666;">学分: {{item.Credits}}</view>
+        </view>
+    </block>
+  </view>
+
+  <view wx:if="{{!loading && courseList.length === 0}}" style="text-align: center; color: #999; margin-top: 50rpx;">
+    暂无授课记录
+  </view>
+</view>
