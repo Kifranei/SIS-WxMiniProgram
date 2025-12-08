@@ -1,4 +1,5 @@
-// pages/main/main.js
+const { request, getRoleName, getCachedUser, clearUser } = require('../../utils/api');
+
 Page({
   data: {
     userInfo: null,
@@ -8,83 +9,86 @@ Page({
     isLoading: true,
     showDetailModal: false,
     selectedCourse: null,
-    dayChars: ["", "一", "二", "三", "四", "五", "六", "日"],
-    roleName: '' // 用于显示身份
+    dayChars: ['', '一', '二', '三', '四', '五', '六', '日'],
+    roleName: '',
+    dashboardStats: null
   },
 
-  onLoad: function(options) {
-    const userInfo = wx.getStorageSync('userInfo');
+  onLoad() {
+    this.bootstrap();
+  },
+
+  onShow() {
+    // 返回页面时如果缓存丢失，则重新初始化
+    if (!this.data.userInfo) {
+      this.bootstrap();
+    }
+  },
+
+  bootstrap() {
+    const userInfo = getCachedUser();
     if (!userInfo) {
       wx.reLaunch({ url: '/pages/index/index' });
       return;
     }
 
-    // [修复点1]：先定义映射关系并计算出 roleName，然后再调用 setData
-    const roleMap = { 1: '教师', 2: '学生', 0: '管理员' };
-    // 防止 Role 字段不存在导致 undefined，增加默认值处理
-    const userRole = userInfo.Role !== undefined ? userInfo.Role : -1; 
-    const roleName = roleMap[userRole] || '未知用户';
-
-    // [修复点2]：确保 setData 时，roleName 已经有了具体的值
+    const roleName = getRoleName(userInfo.Role);
     this.setData({
-      userInfo: userInfo,
-      roleName: roleName
+      userInfo,
+      roleName
     });
 
     this.fetchTimetable(userInfo.UserID);
+    if (userInfo.Role === 0) {
+      this.fetchDashboard(userInfo.UserID);
+    }
   },
 
-  fetchTimetable: function(userId) {
+  fetchTimetable(userId) {
     this.setData({ isLoading: true });
-    // 注意：真机调试时请将 localhost 替换为电脑 IP
-    const apiUrl = `https://localhost:44332/api/miniprogram/timetable?userId=${userId}`;
-    
-    wx.request({
-      url: apiUrl,
-      success: (res) => {
-        if (res.statusCode === 200) {
-          this.setData({
-            allTimetable: res.data,
-            isLoading: false
-          });
-        }
-      },
-      fail: (err) => {
-        console.error("课表获取失败", err);
+    request(`/timetable?userId=${userId}`)
+      .then((data) => {
+        this.setData({
+          allTimetable: data,
+          isLoading: false
+        });
+      })
+      .catch((err) => {
+        console.error('课表获取失败', err);
+        wx.showToast({ title: '课表加载失败', icon: 'error' });
         this.setData({ isLoading: false });
-      }
-    });
+      });
   },
 
-  // 当 swiper 滑动时，更新顶部的周数显示
-  onWeekChange: function(e) {
+  fetchDashboard(userId) {
+    request(`/stats?userId=${userId}`)
+      .then((data) => {
+        this.setData({ dashboardStats: data });
+      })
+      .catch(() => {
+        this.setData({ dashboardStats: null });
+      });
+  },
+
+  onWeekChange(e) {
     if (e.detail.source === 'touch') {
-      this.setData({
-        currentWeek: e.detail.current + 1
-      });
+      this.setData({ currentWeek: e.detail.current + 1 });
     }
   },
 
-  // 点击“上一周”按钮
-  prevWeek: function() {
+  prevWeek() {
     if (this.data.currentWeek > 1) {
-      this.setData({
-        currentWeek: this.data.currentWeek - 1
-      });
+      this.setData({ currentWeek: this.data.currentWeek - 1 });
     }
   },
 
-  // 点击“下一周”按钮
-  nextWeek: function() {
+  nextWeek() {
     if (this.data.currentWeek < 21) {
-      this.setData({
-        currentWeek: this.data.currentWeek + 1
-      });
+      this.setData({ currentWeek: this.data.currentWeek + 1 });
     }
   },
 
-  // 点击课程格子，显示详情
-  showCourseDetail: function(e) {
+  showCourseDetail(e) {
     const course = e.currentTarget.dataset.course;
     if (!course) return;
     this.setData({
@@ -93,47 +97,45 @@ Page({
     });
   },
 
-  // 关闭弹窗
-  hideModal: function() {
-    this.setData({
-      showDetailModal: false
-    });
+  hideModal() {
+    this.setData({ showDetailModal: false });
   },
 
-  // 跳转到总课表页面
-  navigateToMaster: function() {
-    wx.navigateTo({
-      url: '/pages/master-sis/master-sis', // 确保路径与 app.json 一致
-    });
+  navigateToMaster() {
+    wx.navigateTo({ url: '/pages/master-sis/master-sis' });
   },
 
-  // 跳转到成绩页
-  navigateToGrades: function() {
+  navigateToGrades() {
     wx.navigateTo({ url: '/pages/grades/grades' });
   },
-  // 跳转到教师课程页
-  navigateToMyCourses: function() {
+
+  navigateToMyCourses() {
     wx.navigateTo({ url: '/pages/my-courses/my-courses' });
   },
-  
-  // 跳转到管理员统计页
-  navigateToAdminStats: function() {
+
+  navigateToAdminStats() {
     wx.navigateTo({ url: '/pages/admin-stats/admin-stats' });
   },
-  
-  logout: function() {
+
+  onPullDownRefresh() {
+    if (!this.data.userInfo) return;
+    this.fetchTimetable(this.data.userInfo.UserID);
+    if (this.data.userInfo.Role === 0) {
+      this.fetchDashboard(this.data.userInfo.UserID);
+    }
+    wx.stopPullDownRefresh();
+  },
+
+  logout() {
     wx.showModal({
       title: '提示',
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
-          wx.removeStorageSync('userInfo');
-          wx.reLaunch({
-            url: '/pages/index/index'
-          });
+          clearUser();
+          wx.reLaunch({ url: '/pages/index/index' });
         }
       }
     });
   }
-
 });

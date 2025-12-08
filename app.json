@@ -1,14 +1,12 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/main",
-    "pages/index/m",
     "pages/main/main",
     "pages/master-sis/master-sis",
-    "pages/grades/grades", 
+    "pages/grades/grades",
     "pages/my-courses/my-courses",
-    "pages/admin-stats/admin-stats"
+    "pages/admin-stats/admin-stats",
+    "pages/logs/logs"
   ],
   "window": {
     "navigationBarTextStyle": "black",

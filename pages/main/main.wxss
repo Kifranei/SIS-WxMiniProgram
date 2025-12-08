@@ -1,29 +1,19 @@
 /* pages/main/main.wxss */
 .container { display: flex; flex-direction: column; height: 100vh; }
-.header { 
-  display: flex; 
-  justify-content: space-between; /* 改为 space-between 来分布元素 */
-  align-items: center; 
-  padding: 20rpx; 
-  background-color: #fff; 
-  border-bottom: 1rpx solid #e8e8e8; 
-  flex-shrink: 0; 
-}
-.user-info {
-  font-size: 28rpx;
-  color: #666;
-  flex-shrink: 0; /* 防止被压缩 */
-}
-.week-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1; /* 占据中间所有可用空间 */
-}
+.top-status-bar { width: 100%; padding: 20rpx 30rpx; background-color: #f8f9fa; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; border-bottom: 1rpx solid #eee; }
+.user-info-group { display: flex; align-items: center; }
+.realname { font-size: 30rpx; font-weight: bold; color: #333; }
+.role-tag { font-size: 22rpx; color: #fff; background-color: #4caf50; padding: 4rpx 12rpx; border-radius: 10rpx; margin-left: 15rpx; }
+.logout-btn { font-size: 28rpx; color: #d9534f; padding: 10rpx; }
+.header { display: flex; flex-direction: column; gap: 10rpx; padding: 20rpx; background-color: #fff; border-bottom: 1rpx solid #e8e8e8; flex-shrink: 0; }
+.week-navigation { display: flex; align-items: center; justify-content: center; }
 .nav-btn { color: #007bff; font-size: 28rpx; padding: 0 15rpx; }
-.current-week { font-size: 32rpx; font-weight: bold; }
-.master-btn { background-color: #28a745 !important; color: white !important; font-size: 24rpx !important; }
-.loading-tip { text-align: center; color: #999; margin-top: 100rpx; }
+.current-week { font-size: 32rpx; font-weight: bold; color: #007aff; }
+.function-area { display: flex; justify-content: center; gap: 20rpx; flex-wrap: wrap; }
+.btn-grades { border-color: #ff9800; color: #ff9800; }
+.btn-courses { border-color: #9c27b0; color: #9c27b0; }
+.btn-stats { border-color: #e91e63; color: #e91e63; }
+.loading-tip { text-align: center; color: #999; margin-top: 60rpx; }
 .timetable-swiper { flex: 1; width: 100%; }
 .timetable-scroll { height: 100%; }
 .grid-container { display: grid; grid-template-columns: 80rpx repeat(7, 100rpx); grid-auto-rows: 80rpx; }
@@ -31,7 +21,6 @@
 .day-header, .time-header { background-color: #f8f9fa; font-weight: bold; color: #333; }
 .day-cell { position: relative; }
 .course-block { position: absolute; top: 2rpx; left: 2rpx; right: 2rpx; background-color: #61c4ff; color: white; border-radius: 6rpx; padding: 5rpx; box-sizing: border-box; font-size: 20rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; overflow: hidden; }
-/* 详情弹窗样式 */
 .modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; }
 .modal-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; background-color: white; border-radius: 10rpx; z-index: 1001; }
 .modal-title { padding: 30rpx; text-align: center; font-size: 32rpx; font-weight: bold; border-bottom: 1rpx solid #eee; }
@@ -39,3 +28,10 @@
 .modal-content .label { font-weight: bold; color: #333; }
 .modal-footer { padding: 20rpx; border-top: 1rpx solid #eee; text-align: center; }
 .modal-btn { width: 100%; background-color: #007bff; color: white; }
+.admin-digest { margin: 0 20rpx 20rpx; background: #f1f5f9; border-radius: 12rpx; padding: 20rpx; }
+.digest-title { font-size: 28rpx; font-weight: 600; color: #2b5cb5; margin-bottom: 16rpx; }
+.digest-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 16rpx; }
+.digest-grid .digest-item { background: #fff; border-radius: 10rpx; padding: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 6rpx; }
+.digest-item.full-width { grid-column: span 2; }
+.digest-label { color: #7f8c9f; font-size: 24rpx; }
+.digest-value { font-size: 34rpx; font-weight: bold; color: #1f2937; }
