@@ -1,1 +1,4 @@
-/* pages/grades/grades.wxss */
+.grade-value {
+  min-width: 120rpx;
+  text-align: right;
+}

@@ -1,20 +1,17 @@
 /* pages/master-timetable/master-timetable.wxss */
-.container { display: flex; flex-direction: column; height: 100vh; }
-.header { padding: 20rpx; text-align: center; border-bottom: 1rpx solid #eee; flex-shrink: 0; }
-.title { font-size: 36rpx; font-weight: bold; }
-.loading-tip { text-align: center; color: #999; margin-top: 100rpx; }
-.timetable-wrapper { flex: 1; overflow: hidden; }
+.timetable-wrapper { margin-top: 22rpx; padding: 18rpx; overflow: hidden; }
 .timetable-scroll { width: 100%; height: 100%; white-space: nowrap; }
 .grid-container { display: inline-grid; grid-template-columns: 80rpx repeat(7, 100rpx); grid-auto-rows: 80rpx; }
-.grid-item { box-sizing: border-box; border-bottom: 1rpx solid #eee; border-right: 1rpx solid #eee; text-align: center; font-size: 22rpx; color: #666; display: flex; align-items: center; justify-content: center; white-space: normal; }
-.day-header, .time-header { background-color: #f8f9fa; font-weight: bold; color: #333; }
+.grid-item { box-sizing: border-box; border-bottom: 1rpx solid #e5e7eb; border-right: 1rpx solid #e5e7eb; text-align: center; font-size: 22rpx; color: #64748b; display: flex; align-items: center; justify-content: center; white-space: normal; background: rgba(255,255,255,0.7); }
+.day-header, .time-header { background-color: #f8fafc; font-weight: bold; color: #334155; }
 .day-cell { position: relative; }
-.course-block { position: absolute; top: 2rpx; left: 2rpx; right: 2rpx; background-color: #007bff; color: white; border-radius: 6rpx; padding: 5rpx; box-sizing: border-box; font-size: 20rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; overflow: hidden; }
+.course-block { position: absolute; top: 2rpx; left: 2rpx; right: 2rpx; background: linear-gradient(135deg, #0a84ff 0%, #5ac8fa 100%); color: white; border-radius: 12rpx; padding: 5rpx; box-sizing: border-box; font-size: 20rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; overflow: hidden; box-shadow: 0 8rpx 20rpx rgba(10, 132, 255, 0.22); }
+.course-period { font-size: 18rpx; opacity: 0.8; }
 /* 弹窗样式 */
 .modal-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; }
-.modal-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; background-color: white; border-radius: 10rpx; z-index: 1001; }
+.modal-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; background-color: white; border-radius: 24rpx; z-index: 1001; overflow: hidden; }
 .modal-title { padding: 30rpx; text-align: center; font-size: 32rpx; font-weight: bold; border-bottom: 1rpx solid #eee; }
 .modal-content { padding: 30rpx; font-size: 28rpx; line-height: 1.8; }
 .modal-content .label { font-weight: bold; color: #333; }
 .modal-footer { padding: 20rpx; border-top: 1rpx solid #eee; text-align: center; }
-.modal-btn { width: 100%; background-color: #007bff; color: white; }
+.modal-btn { width: 100%; background: linear-gradient(135deg, #0a84ff 0%, #5ac8fa 100%); color: white; border-radius: 999rpx; }

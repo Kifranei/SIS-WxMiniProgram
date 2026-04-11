@@ -1,0 +1,81 @@
+<view class="page-shell">
+  <view class="hero-card">
+    <view class="hero-kicker">Course Center</view>
+    <view class="hero-title">在线选课</view>
+    <view class="hero-subtitle">为 {{studentName}} 提供的移动端选课入口，仅开放专业选修、公共选修与体育选修。</view>
+    <view class="stat-row">
+      <view class="stat-chip">
+        <text class="stat-label">专业/公共选修</text>
+        <text class="stat-value">{{otherCoursesTaken}} 门</text>
+      </view>
+      <view class="stat-chip">
+        <text class="stat-label">体育选修</text>
+        <text class="stat-value">{{sportsCoursesTaken}} 门</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-pill {{currentTab === 'other' ? 'is-active' : ''}}" data-tab="other" bindtap="switchTab">专业/公共选修</view>
+    <view class="tab-pill {{currentTab === 'sports' ? 'is-active' : ''}}" data-tab="sports" bindtap="switchTab">体育选修</view>
+    <view class="tab-pill {{currentTab === 'enrolled' ? 'is-active' : ''}}" data-tab="enrolled" bindtap="switchTab">已选课程</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-panel">正在加载课程数据...</view>
+  <view wx:if="{{!loading && loadError}}" class="error-panel">{{loadError}}</view>
+
+  <view wx:if="{{!loading && !loadError && currentTab === 'other'}}" class="course-list">
+    <block wx:for="{{otherElectives}}" wx:key="CourseID">
+      <view class="course-card">
+        <view class="course-header">
+          <view>
+            <view class="course-title">{{item.CourseName}}</view>
+            <view class="course-meta">{{item.CourseTypeText}} · {{item.Credits}} 学分</view>
+          </view>
+          <view class="type-badge">{{item.CourseTypeText}}</view>
+        </view>
+        <view class="course-info">教师：{{item.TeacherName}}</view>
+        <view class="course-info">安排：{{item.ScheduleSummary}}</view>
+        <button class="action-btn primary" loading="{{submittingCourseId === item.CourseID}}" data-course-id="{{item.CourseID}}" bindtap="selectCourse">选择课程</button>
+      </view>
+    </block>
+    <view wx:if="{{otherElectives.length === 0}}" class="empty-state">当前没有可选的专业/公共选修课程。</view>
+  </view>
+
+  <view wx:if="{{!loading && !loadError && currentTab === 'sports'}}" class="course-list">
+    <block wx:for="{{sportsElectives}}" wx:key="CourseID">
+      <view class="course-card">
+        <view class="course-header">
+          <view>
+            <view class="course-title">{{item.CourseName}}</view>
+            <view class="course-meta">{{item.CourseTypeText}} · {{item.Credits}} 学分</view>
+          </view>
+          <view class="type-badge sports">体育限选</view>
+        </view>
+        <view class="course-info">教师：{{item.TeacherName}}</view>
+        <view class="course-info">安排：{{item.ScheduleSummary}}</view>
+        <button class="action-btn primary" loading="{{submittingCourseId === item.CourseID}}" data-course-id="{{item.CourseID}}" bindtap="selectCourse">选择课程</button>
+      </view>
+    </block>
+    <view wx:if="{{sportsElectives.length === 0}}" class="empty-state">当前没有可选的体育选修课程。</view>
+  </view>
+
+  <view wx:if="{{!loading && !loadError && currentTab === 'enrolled'}}" class="course-list">
+    <block wx:for="{{enrolledElectives}}" wx:key="CourseID">
+      <view class="course-card enrolled">
+        <view class="course-header">
+          <view>
+            <view class="course-title">{{item.CourseName}}</view>
+            <view class="course-meta">{{item.CourseTypeText}} · {{item.Credits}} 学分</view>
+          </view>
+          <view class="type-badge enrolled-badge">已选</view>
+        </view>
+        <view class="course-info">教师：{{item.TeacherName}}</view>
+        <view class="course-info">安排：{{item.ScheduleSummary}}</view>
+        <view wx:if="{{item.Grade !== null}}" class="course-info">成绩：{{item.Grade}}</view>
+        <button wx:if="{{item.CanWithdraw}}" class="action-btn secondary" loading="{{submittingCourseId === item.CourseID}}" data-course-id="{{item.CourseID}}" bindtap="withdrawCourse">退选课程</button>
+      </view>
+    </block>
+    <view wx:if="{{enrolledElectives.length === 0}}" class="empty-state">你当前还没有移动端可管理的选课记录。</view>
+  </view>
+</view>

@@ -1,1 +1,45 @@
-/* pages/my-courses/my-courses.wxss */
+.course-item {
+  border-left: 8rpx solid #f59e0b;
+}
+
+.course-type-badge {
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.course-meta-item {
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  color: #667085;
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.course-actions {
+  margin-top: 22rpx;
+}
+
+.mini-action {
+  margin: 0;
+  padding: 0 26rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+}
+
+.mini-action::after {
+  border: none;
+}
+
+.mini-action.primary {
+  color: #fff;
+  background: linear-gradient(135deg, #0a84ff 0%, #38bdf8 100%);
+}

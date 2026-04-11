@@ -1,3 +1,5 @@
+const { requireLogin, redirectToLogin, handleAuthFailure } = require('../../utils/auth');
+
 Page({
   data: {
     userInfo: null,
@@ -13,9 +15,24 @@ Page({
   },
 
   onLoad() {
-    const userInfo = wx.getStorageSync('userInfo');
+    this.initializePage();
+  },
+
+  onShow() {
+    const { userInfo, isAdmin } = this.data;
     if (!userInfo) {
-      wx.reLaunch({ url: '/pages/index/index' });
+      this.initializePage();
+      return;
+    }
+
+    if (!isAdmin) {
+      this.fetchTimetable(userInfo.UserID);
+    }
+  },
+
+  initializePage() {
+    const userInfo = requireLogin();
+    if (!userInfo) {
       return;
     }
 
@@ -29,10 +46,6 @@ Page({
       isAdmin,
       isLoading: !isAdmin
     });
-
-    if (!isAdmin) {
-      this.fetchTimetable(userInfo.UserID);
-    }
   },
 
   fetchTimetable(userId) {
@@ -49,6 +62,9 @@ Page({
           });
         } else {
           this.setData({ isLoading: false });
+          if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+            handleAuthFailure('登录状态已失效，请重新登录');
+          }
         }
       },
       fail: () => {
@@ -107,6 +123,10 @@ Page({
     wx.navigateTo({ url: '/pages/grades/grades' });
   },
 
+  navigateToCourseSelection() {
+    wx.navigateTo({ url: '/pages/course-selection/course-selection' });
+  },
+
   navigateToMyCourses() {
     wx.navigateTo({ url: '/pages/my-courses/my-courses' });
   },
@@ -121,8 +141,7 @@ Page({
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
-          wx.removeStorageSync('userInfo');
-          wx.reLaunch({ url: '/pages/index/index' });
+          redirectToLogin();
         }
       }
     });

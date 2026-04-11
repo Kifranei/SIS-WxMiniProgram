@@ -1,4 +1,6 @@
 // pages/index/m.js
+const { getStoredUser } = require('../../utils/auth');
+
 Page({
 
   /**
@@ -12,7 +14,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    const userInfo = getStoredUser();
+    if (userInfo) {
+      wx.reLaunch({ url: '/pages/main/main' });
+      return;
+    }
 
+    wx.reLaunch({ url: '/pages/index/index' });
   },
 
   /**
@@ -63,4 +71,4 @@ Page({
   onShareAppMessage() {
 
   }
-})
+});

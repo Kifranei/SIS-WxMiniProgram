@@ -1,9 +1,13 @@
-<view class="container">
-    <view class="header">
-        <view class="title">学期总课表</view>
+<view class="app-page">
+    <view class="hero-card">
+        <view class="hero-kicker">Semester Board</view>
+        <view class="hero-title">学期总课表</view>
+        <view class="hero-subtitle">查看整个学期的课程安排分布，点击课程卡片可查看详细信息。</view>
     </view>
-    <view wx:if="{{isLoading}}" class="loading-tip">正在加载...</view>
-    <view class="timetable-wrapper" wx:else>
+
+    <view wx:if="{{isLoading}}" class="loading-panel">正在加载总课表...</view>
+
+    <view class="section-card timetable-wrapper" wx:else>
         <scroll-view scroll-x="true" scroll-y="true" class="timetable-scroll">
             <view class="grid-container">
                 <view class="grid-item time-header"></view>
@@ -15,7 +19,7 @@
                             <block wx:if="{{course.DayOfWeek == day && course.StartPeriod == period}}">
                                 <view class="course-block" style="height: {{ (course.EndPeriod - course.StartPeriod + 1) * 80 - 4 }}rpx;" bindtap="showCourseDetail" data-course="{{course}}">
                                     <text>{{course.CourseName}}</text>
-                                    <text style="font-size: 18rpx; opacity: 0.8;">({{course.StartWeek}}-{{course.EndWeek}}周)</text>
+                                    <text class="course-period">({{course.StartWeek}}-{{course.EndWeek}}周)</text>
                                 </view>
                             </block>
                         </block>

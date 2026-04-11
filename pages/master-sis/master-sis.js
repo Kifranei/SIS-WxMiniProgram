@@ -1,3 +1,5 @@
+const { requireLogin, handleAuthFailure } = require('../../utils/auth');
+
 // pages/master-timetable/master-timetable.js
 Page({
   data: {
@@ -9,10 +11,18 @@ Page({
     dayChars: ["", "一", "二", "三", "四", "五", "六", "日"]
   },
   onLoad(options) {
-    const userInfo = wx.getStorageSync('userInfo');
-    if (userInfo) {
-      this.fetchTimetable(userInfo.UserID);
+    this.loadCurrentUserTimetable();
+  },
+  onShow() {
+    this.loadCurrentUserTimetable();
+  },
+  loadCurrentUserTimetable() {
+    const userInfo = requireLogin();
+    if (!userInfo) {
+      return;
     }
+
+    this.fetchTimetable(userInfo.UserID);
   },
   fetchTimetable: function(userId) {
     this.setData({ isLoading: true });
@@ -24,6 +34,12 @@ Page({
       success: (res) => {
         if (res.statusCode === 200) {
           this.setData({ allTimetable: res.data, isLoading: false });
+          return;
+        }
+
+        this.setData({ isLoading: false });
+        if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+          handleAuthFailure('登录状态已失效，请重新登录');
         }
       },
       fail: (err) => {
