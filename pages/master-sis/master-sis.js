@@ -1,4 +1,5 @@
-const { requireLogin, handleAuthFailure } = require('../../utils/auth');
+const { buildApiUrl } = require('../../utils/api');
+const { requireLogin, isAuthFailureStatus, handleAuthFailure } = require('../../utils/auth');
 
 // pages/master-timetable/master-timetable.js
 Page({
@@ -27,7 +28,7 @@ Page({
   fetchTimetable: function(userId) {
     this.setData({ isLoading: true });
     // 【重要】请确保这里的 IP 地址和端口是你正在运行的后端服务的地址
-    const apiUrl = `https://localhost:44332/api/miniprogram/timetable?userId=${userId}`; 
+    const apiUrl = buildApiUrl(`timetable?userId=${userId}`);
     wx.request({
       url: apiUrl,
       method: 'GET',
@@ -38,7 +39,7 @@ Page({
         }
 
         this.setData({ isLoading: false });
-        if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+        if (isAuthFailureStatus(res.statusCode)) {
           handleAuthFailure('登录状态已失效，请重新登录');
         }
       },

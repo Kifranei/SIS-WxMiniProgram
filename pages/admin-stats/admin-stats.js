@@ -1,4 +1,5 @@
-const { requireLogin, handleAuthFailure } = require('../../utils/auth');
+const { buildApiUrl } = require('../../utils/api');
+const { requireLogin, isAuthFailureStatus, handleAuthFailure } = require('../../utils/auth');
 
 // pages/admin-stats/admin-stats.js
 Page({
@@ -13,7 +14,7 @@ Page({
     }
 
     wx.request({
-      url: `https://localhost:44332/api/miniprogram/stats?userId=${userInfo.UserID}`,
+        url: buildApiUrl(`stats?userId=${userInfo.UserID}`),
       success: (res) => {
         if (res.statusCode === 200) {
            this.setData({ stats: res.data, loading: false });
@@ -21,7 +22,7 @@ Page({
         }
 
         this.setData({ loading: false });
-        if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+        if (isAuthFailureStatus(res.statusCode)) {
           handleAuthFailure('登录状态已失效，请重新登录');
         }
       },

@@ -1,3 +1,4 @@
+const { buildApiUrl } = require('../../utils/api');
 const { getStoredUser } = require('../../utils/auth');
 
 // pages/index/index.js
@@ -45,7 +46,7 @@ Page({
 
     // ## 这里是你后端 API 的地址 ##
     // 请确保你的 Visual Studio 项目正在运行！
-    const apiUrl = 'https://localhost:44332/api/miniprogram/login';
+    const apiUrl = buildApiUrl('login');
     this.setData({
       submitting: true,
       errorMessage: ''

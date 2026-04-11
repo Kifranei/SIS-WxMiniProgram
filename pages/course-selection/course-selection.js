@@ -1,5 +1,5 @@
-const API_BASE = 'https://localhost:44332/api/miniprogram';
-const { requireLogin, handleAuthFailure } = require('../../utils/auth');
+const { API_BASE } = require('../../utils/api');
+const { requireLogin, isAuthFailureStatus, handleAuthFailure } = require('../../utils/auth');
 
 Page({
   data: {
@@ -57,7 +57,7 @@ Page({
           const message = (res.data && (res.data.message || res.data.Message)) || `接口加载失败 (${res.statusCode})`;
           this.setData({ loading: false, loadError: message });
           wx.showToast({ title: '接口加载失败', icon: 'none' });
-          if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+          if (isAuthFailureStatus(res.statusCode)) {
             handleAuthFailure('登录状态已失效，请重新登录');
           }
         }
@@ -133,7 +133,7 @@ Page({
               icon: 'none',
               duration: 2600
             });
-            if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+            if (isAuthFailureStatus(res.statusCode)) {
               handleAuthFailure('登录状态已失效，请重新登录');
             }
           },

@@ -17,6 +17,10 @@ function requireLogin() {
   return userInfo;
 }
 
+function isAuthFailureStatus(statusCode) {
+  return statusCode === 401 || statusCode === 403;
+}
+
 function handleAuthFailure(message) {
   wx.showToast({
     title: message || '登录状态已失效，请重新登录',
@@ -33,5 +37,6 @@ module.exports = {
   getStoredUser,
   redirectToLogin,
   requireLogin,
+  isAuthFailureStatus,
   handleAuthFailure
 };

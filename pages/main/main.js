@@ -1,4 +1,5 @@
-const { requireLogin, redirectToLogin, handleAuthFailure } = require('../../utils/auth');
+const { buildApiUrl } = require('../../utils/api');
+const { requireLogin, redirectToLogin, isAuthFailureStatus, handleAuthFailure } = require('../../utils/auth');
 
 Page({
   data: {
@@ -50,7 +51,7 @@ Page({
 
   fetchTimetable(userId) {
     this.setData({ isLoading: true });
-    const apiUrl = `https://localhost:44332/api/miniprogram/timetable?userId=${userId}`;
+    const apiUrl = buildApiUrl(`timetable?userId=${userId}`);
 
     wx.request({
       url: apiUrl,
@@ -62,7 +63,7 @@ Page({
           });
         } else {
           this.setData({ isLoading: false });
-          if (res.statusCode === 401 || res.statusCode === 403 || res.statusCode === 400 || res.statusCode === 404) {
+          if (isAuthFailureStatus(res.statusCode)) {
             handleAuthFailure('登录状态已失效，请重新登录');
           }
         }
