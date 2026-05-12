@@ -1,2 +1,3 @@
-<!--pages/index/m.wxml-->
-<text>pages/index/m.wxml</text>
+<view class="app-page">
+  <view class="loading-panel">正在进入系统...</view>
+</view>

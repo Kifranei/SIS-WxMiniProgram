@@ -1,6 +1,6 @@
 <view class="app-page">
     <view class="hero-card">
-        <view class="hero-kicker">Semester Board</view>
+        <view class="hero-kicker">学期视图</view>
         <view class="hero-title">学期总课表</view>
         <view class="hero-subtitle">查看整个学期的课程安排分布，点击课程卡片可查看详细信息。</view>
     </view>

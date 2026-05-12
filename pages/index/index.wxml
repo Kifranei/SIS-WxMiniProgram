@@ -1,38 +1,33 @@
 <view class="login-page">
-  <view class="ambient ambient-left"></view>
-  <view class="ambient ambient-right"></view>
-
   <view class="login-shell">
-    <view class="brand-card">
-      <view class="brand-kicker">Campus Mobile Portal</view>
-      <view class="brand-title">学生教学管理</view>
-      <view class="brand-title accent">一体化信息系统</view>
-      <view class="brand-desc">统一接入学生、教师、管理员角色，提供课表、选课、成绩与系统状态等移动端能力。</view>
-
-      <view class="brand-tags">
-        <view class="brand-tag">学生</view>
-        <view class="brand-tag">教师</view>
-        <view class="brand-tag">管理员</view>
+    <view class="brand-panel">
+      <view class="app-mark">
+        <image src="/logo.svg" mode="aspectFit"></image>
       </view>
+      <view class="brand-title">教学管理信息系统</view>
+      <view class="brand-desc">移动端教务入口</view>
     </view>
 
     <view class="login-form">
-      <view class="form-kicker">Sign In</view>
-      <view class="form-title">登录</view>
-      <view class="form-desc">使用教务系统账号进入移动端。</view>
+      <view class="form-title">账号登录</view>
+      <view class="form-desc">请使用教务系统账号和密码登录。</view>
 
       <view class="field-group">
         <view class="field-label">用户名</view>
-        <input class="input-item" placeholder="请输入用户名，如 S2101001" bindinput="onUsernameInput" />
+        <view class="input-shell">
+          <input class="input-item" placeholder="请输入用户名" bindinput="onUsernameInput" />
+        </view>
       </view>
 
       <view class="field-group">
         <view class="field-label">密码</view>
-        <input class="input-item" placeholder="请输入密码" password="true" bindinput="onPasswordInput" />
+        <view class="input-shell">
+          <input class="input-item" placeholder="请输入密码" password="true" bindinput="onPasswordInput" />
+        </view>
       </view>
 
       <button class="login-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onLoginTap">
-        {{submitting ? '登录中...' : '进入系统'}}
+        {{submitting ? '正在登录...' : '登录'}}
       </button>
 
       <view wx:if="{{errorMessage}}" class="error-message">{{errorMessage}}</view>

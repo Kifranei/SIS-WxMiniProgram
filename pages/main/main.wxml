@@ -1,6 +1,6 @@
 <view class="app-page timetable-page">
   <view class="hero-card">
-    <view class="hero-kicker">Mobile Portal</view>
+    <view class="hero-kicker">教务工作台</view>
     <view class="hero-title">{{isAdmin ? '管理概览' : '我的课表'}}</view>
     <view class="hero-subtitle">
       <text>{{userInfo.RealName}}</text>
@@ -10,7 +10,7 @@
       <text wx:if="{{!isAdmin}}">{{weekArray[currentWeek - 1]}}</text>
     </view>
     <view class="action-row">
-      <button class="quick-btn quick-btn-danger" size="mini" bindtap="logout">退出登录</button>
+      <button class="quick-btn quick-btn-danger" size="mini" bindtap="logout">退出</button>
       <button wx:if="{{!isAdmin}}" class="quick-btn" size="mini" bindtap="navigateToMaster">总课表</button>
       <button wx:if="{{userInfo.Role == 2}}" class="quick-btn quick-btn-warn" size="mini" bindtap="navigateToGrades">成绩</button>
       <button wx:if="{{userInfo.Role == 2}}" class="quick-btn quick-btn-primary" size="mini" bindtap="navigateToCourseSelection">选课</button>
